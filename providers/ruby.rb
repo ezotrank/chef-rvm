@@ -142,6 +142,10 @@ def install_ruby_dependencies(rubie)
                    libyaml-devel libffi-devel openssl-devel
                    make bzip2 autoconf automake libtool bison
                    libxml2 libxml2-devel libxslt libxslt-devel }
+        if node['platform_version'] = '6.3'
+          pkgs.delete('libyaml-devel')
+          libyaml_source_install = true
+        end
         pkgs += %w{ git subversion autoconf } if rubie =~ /^ruby-head$/
     end
   when /^jruby-/
@@ -158,5 +162,12 @@ def install_ruby_dependencies(rubie)
     package pkg do
       action :nothing
     end.run_action(:install)
+  end
+
+  if libyaml_source_install
+    execute "rvm libyaml install" do
+      command "rvm pkg install libyaml"
+      not_if { File.exist?('/usr/local/rvm/usr/lib/libyaml.so')}
+    end
   end
 end
