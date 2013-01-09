@@ -20,7 +20,7 @@ development), include `recipe[rvm::user]` in your run_list and add a user
 hash to the `user_installs` attribute list. For example:
 
     node['rvm']['user_installs'] = [
-      { 'user'          => 'wigglebottom'
+      { 'user'          => 'wigglebottom',
         'default_ruby'  => 'rbx',
         'rubies'        => ['1.9.2', '1.8.7']
       }
@@ -283,6 +283,9 @@ The default puts bundler and rake in each Ruby:
       { 'name'    => 'bundler' },
       { 'name'    => 'rake',
         'version' => '0.9.2'
+      },
+      { 'name'    => 'rubygems-bundler',
+        'action'  => 'remove'
       }
     ]
 
@@ -300,6 +303,9 @@ The default puts bundler and rake in each Ruby:
       { 'name'    => 'bundler' },
       { 'name'    => 'rake',
         'version' => '0.9.2'
+      },
+      { 'name'    => 'rubygems-bundler',
+        'action'  => 'remove'
       }
     ]
 
@@ -365,7 +371,10 @@ The hash keys correspond to the default/system equivalents. For example:
           { 'name'    => 'bundler',
             'version' => '1.1.pre.7'
           },
-          { 'name'    => 'rake' }
+          { 'name'    => 'rake' },
+          { 'name'    => 'rubygems-bundler',
+            'action'  => 'remove'
+          }
         ]
       },
       { 'user'          => 'jenkins',
@@ -390,6 +399,9 @@ The hash keys correspond to the default/system equivalents. For example:
           },
           { 'name'    => 'rake',
             'version' => '0.8.7'
+          },
+          { 'name'    => 'rubygems-bundler',
+            'action'  => 'remove'
           }
         ]
       }
