@@ -167,7 +167,7 @@ def install_ruby_dependencies(rubie)
   if libyaml_source_install
     execute "rvm libyaml install" do
       command "rvm pkg install libyaml"
-      not_if { File.exist?('/usr/local/rvm/usr/lib/libyaml.so')}
+      not_if { File.exists?('/usr/local/rvm/usr/lib/libyaml.so') }
     end
   end
 end
