@@ -113,6 +113,10 @@ def skip_ruby?
   end
 end
 
+def libyaml_present?
+  %x[/sbin/ldconfig -p|grep libyaml-0.so].empty?
+end
+
 ##
 # Installs any package dependencies needed by a given ruby
 #
@@ -142,9 +146,9 @@ def install_ruby_dependencies(rubie)
                    libyaml-devel libffi-devel openssl-devel
                    make bzip2 autoconf automake libtool bison
                    libxml2 libxml2-devel libxslt libxslt-devel }
-        if node['platform_version'] = '6.3'
+        if node['platform_version'] == '6.3'
           pkgs.delete('libyaml-devel')
-          libyaml_source_install = true
+          libyaml_install = true unless libyaml_present?
         end
         pkgs += %w{ git subversion autoconf } if rubie =~ /^ruby-head$/
     end
@@ -164,10 +168,10 @@ def install_ruby_dependencies(rubie)
     end.run_action(:install)
   end
 
-  if libyaml_source_install
+  if libyaml_install
     execute "rvm libyaml install" do
-      command "rvm pkg install libyaml"
-      not_if { File.exists?('/usr/local/rvm/usr/lib/libyaml.so') }
+      command "source /etc/rvmrc && rvm pkg install libyaml"
+      not_if { ::File.exists?('/usr/local/rvm/usr/lib/libyaml.so') }
     end
   end
 end

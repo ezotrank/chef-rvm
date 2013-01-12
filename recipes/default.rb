@@ -17,8 +17,7 @@
 # limitations under the License.
 #
 
-# install rvm api gem during chef compile phase
-gem_package 'rvm' do
+chef_gem 'rvm' do
   action :nothing
 end.run_action(:install)
 
