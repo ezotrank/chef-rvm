@@ -17,13 +17,12 @@
 # limitations under the License.
 #
 
+# install rvm api gem during chef compile phase
 chef_gem 'rvm' do
-  action :nothing
-end.run_action(:install)
-
-require 'rubygems'
-Gem.clear_paths
+  version '>= 1.11.3.6'
+end
 require 'rvm'
+
 create_rvm_shell_chef_wrapper
 create_rvm_chef_user_environment
 
